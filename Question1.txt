@@ -1,0 +1,15 @@
+def validBrackets(input_string):
+        while "()" in input_string or "{}" in input_string or '[]' in input_string:
+            input_string = input_string.replace("()", "").replace('{}', "").replace('[]', "")
+        return input_string == ''
+
+try:
+    ars = {")": "(", "}": "{", "]": "["}
+    a=input()
+    if a in ars:
+        b = validBrackets(a)
+        print(b)
+    else:
+        print("Wrong Format !")
+except ValueError:
+    print("Wrong input !")
