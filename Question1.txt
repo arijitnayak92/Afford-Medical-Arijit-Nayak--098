@@ -4,12 +4,8 @@ def validBrackets(input_string):
         return input_string == ''
 
 try:
-    ars = {")": "(", "}": "{", "]": "["}
     a=input()
-    if a in ars:
-        b = validBrackets(a)
-        print(b)
-    else:
-        print("Wrong Format !")
+    b = validBrackets(a)
+    print(b)
 except ValueError:
     print("Wrong input !")
