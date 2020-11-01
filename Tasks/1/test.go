@@ -10,22 +10,17 @@ var cache = map[int]int{
 	1: 1,
 	2: 1,
 }
-var latestNum int = 1
+var lastNum int = 3
 
 func fib(n int) int {
 	if n >= 0 {
-		i := 3 // last value inside the cache
-		if n == 0 {
-			return 0
-		} else if n <= 2 {
-			return 1
+		if _, ok := cache[n]; ok {
+			return cache[n]
 		} else {
-		LOOP:
-			if i <= n {
+			for i := lastNum; i <= n; i++ {
 				cache[i] = cache[i-1] + cache[i-2]
-				i++
-				goto LOOP
 			}
+			lastNum = n
 			return cache[n]
 		}
 	} else {
