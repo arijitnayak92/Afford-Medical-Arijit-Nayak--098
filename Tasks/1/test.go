@@ -5,27 +5,29 @@ import (
 	"time"
 )
 
-var cache = make(map[int]int)
+var cache = map[int]int{
+	0: 0,
+	1: 1,
+	2: 1,
+}
+var latestNum int = 1
 
 func fib(n int) int {
 	if n >= 0 {
-		cache[0], cache[1], cache[2] = 0, 1, 1
+		i := 3 // last value inside the cache
 		if n == 0 {
 			return 0
 		} else if n <= 2 {
 			return 1
-		} else if val, ok := cache[n]; ok {
-			return val
+		} else {
+		LOOP:
+			if i <= n {
+				cache[i] = cache[i-1] + cache[i-2]
+				i++
+				goto LOOP
+			}
+			return cache[n]
 		}
-		val := fib(n-1) + fib(n-2)
-		cache[n] = val
-		return val
-
-		// for i := 3; i <= n; i++ {
-		// 	cache[i] = cache[i-1] + cache[i-2]
-		// }
-
-		// return cache[n]
 	} else {
 		return -1
 	}
@@ -38,17 +40,3 @@ func main() {
 	duration := time.Since(start)
 	fmt.Printf("Fibanocci of %d is = %d, execuation time %v\n", num, res, duration)
 }
-
-// package main
-
-// import "fmt"
-
-// func main() {
-// 	var myMap = make(map[string]int)
-// 	myMap["arijit"] = 1
-// 	if val, ok := myMap["arijit"]; ok {
-// 		fmt.Println(ok)
-// 		fmt.Println(val)
-// 	}
-// 	fmt.Println(myMap)
-// }
