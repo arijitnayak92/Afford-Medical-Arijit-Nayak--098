@@ -17,15 +17,15 @@ func fib(n int) int {
 		} else if val, ok := cache[n]; ok {
 			return val
 		}
-		// val := fib(n-1) + fib(n-2)
-		// cache[n] = val
-		// return val
+		val := fib(n-1) + fib(n-2)
+		cache[n] = val
+		return val
 
-		for i := 3; i <= n; i++ {
-			cache[i] = cache[i-1] + cache[i-2]
-		}
+		// for i := 3; i <= n; i++ {
+		// 	cache[i] = cache[i-1] + cache[i-2]
+		// }
 
-		return cache[n]
+		// return cache[n]
 	} else {
 		return -1
 	}
@@ -38,3 +38,17 @@ func main() {
 	duration := time.Since(start)
 	fmt.Printf("Fibanocci of %d is = %d, execuation time %v\n", num, res, duration)
 }
+
+// package main
+
+// import "fmt"
+
+// func main() {
+// 	var myMap = make(map[string]int)
+// 	myMap["arijit"] = 1
+// 	if val, ok := myMap["arijit"]; ok {
+// 		fmt.Println(ok)
+// 		fmt.Println(val)
+// 	}
+// 	fmt.Println(myMap)
+// }
