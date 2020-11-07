@@ -8,17 +8,13 @@ type product struct {
 }
 
 type cart struct {
-	products   []product
-	getCart    iCart
-	modifyCart iCartt
+	products []product
+	getCart  iCart
 }
 
 type iCart interface {
-	getAll()
+	getAll() ([]product, int)
 	getOne(id string) (product, int)
-}
-
-type iCartt interface {
 	update(id int, newID string, entry string)
 	delete(id string)
 	add(item product)
@@ -29,6 +25,10 @@ func newProduct(id string, pName string) product {
 		pID:  id,
 		name: pName,
 	}
+}
+
+func newCart(id string, pName string) product {
+	return newProduct(id, pName)
 }
 
 func (cartItems *cart) getOne(id string) (product, int) {
@@ -43,13 +43,11 @@ func (cartItems *cart) getOne(id string) (product, int) {
 	return product{}, -1
 }
 
-func (cartItems *cart) getAll() {
+func (cartItems *cart) getAll() ([]product, int) {
 	if len(cartItems.products) == 0 {
-		fmt.Println("No Product are there !")
+		return cartItems.products, -1
 	}
-	for _, item := range cartItems.products {
-		fmt.Printf("Product ID -  %v , Product Name - %v\n", item.pID, item.name)
-	}
+	return cartItems.products, 1
 }
 
 func (cartItems *cart) add(item product) {
@@ -82,6 +80,7 @@ func main() {
 	for {
 		fmt.Println("Choose your choice (1 : Add, 2 : Update, 3 : Delete, 4 : All Details, 5 : Get One Details")
 		fmt.Scan(&input)
+
 		if input == 0 {
 			fmt.Println("Terminating Process !")
 			break
@@ -93,7 +92,7 @@ func main() {
 			var name string
 			fmt.Println("Please enter product id and name,seperating by a space..")
 			fmt.Scan(&id, &name)
-			newEntry := newProduct(id, name)
+			newEntry := newCart(id, name)
 			myCart.add(newEntry)
 		case 2:
 			var id string
@@ -138,7 +137,15 @@ func main() {
 
 		case 4:
 			fmt.Println("Showing all product details...")
-			myCart.getAll()
+			product, isPresent := myCart.getAll()
+			if isPresent == -1 {
+				fmt.Println("No Product are there !")
+				continue
+			}
+			for _, item := range product {
+				fmt.Printf("Product ID - %s , Product name - %s\n", item.pID, item.name)
+			}
+
 		case 5:
 			var id string
 			fmt.Print("Please enter the product id to view the details:- ")
@@ -148,7 +155,7 @@ func main() {
 				fmt.Println("Details Not Found !")
 				continue
 			}
-			fmt.Printf("%s %s", item.pID, item.name)
+			fmt.Printf("Product ID - %s , Product name - %s", item.pID, item.name)
 
 		default:
 			fmt.Println("No match")
