@@ -27,15 +27,17 @@ func newProduct(id string, pName string) product {
 	}
 }
 
-func newCart(id string, pName string) product {
-	return newProduct(id, pName)
+func newCart(items []product) cart {
+	return cart{
+		products: items,
+	}
 }
 
-func (cartItems *cart) getOne(id string) (product, int) {
-	if len(cartItems.products) == 0 {
+func (c *cart) getOne(id string) (product, int) {
+	if len(c.products) == 0 {
 		return product{}, -1
 	}
-	for index, item := range cartItems.products {
+	for index, item := range c.products {
 		if item.pID == id {
 			return item, index
 		}
@@ -43,32 +45,32 @@ func (cartItems *cart) getOne(id string) (product, int) {
 	return product{}, -1
 }
 
-func (cartItems *cart) getAll() ([]product, int) {
-	if len(cartItems.products) == 0 {
-		return cartItems.products, -1
+func (c *cart) getAll() ([]product, int) {
+	if len(c.products) == 0 {
+		return c.products, -1
 	}
-	return cartItems.products, 1
+	return c.products, 1
 }
 
-func (cartItems *cart) add(item product) {
-	cartItems.products = append(cartItems.products, item)
+func (c *cart) add(item product) {
+	c.products = append(c.products, item)
 	fmt.Println("Item Added Successfully !")
 }
 
-func (cartItems *cart) delete(id int) {
-	if len(cartItems.products) == 0 {
+func (c *cart) delete(id int) {
+	if len(c.products) == 0 {
 		fmt.Println("Cart is empty !")
 	}
-	(*cartItems).products = append((*cartItems).products[:id], (*cartItems).products[id+1:]...)
+	(*c).products = append((*c).products[:id], (*c).products[id+1:]...)
 	fmt.Println("Item Removed....")
 }
 
-func (cartItems *cart) update(id int, newID string, entry string) {
-	if len(cartItems.products) == 0 {
+func (c *cart) update(id int, newID string, entry string) {
+	if len(c.products) == 0 {
 		fmt.Println("Cart is empty !")
 	}
-	(*cartItems).products[id].pID = newID
-	(*cartItems).products[id].name = entry
+	(*c).products[id].pID = newID
+	(*c).products[id].name = entry
 	fmt.Println("Item Updated....!")
 }
 
@@ -92,7 +94,7 @@ func main() {
 			var name string
 			fmt.Println("Please enter product id and name,seperating by a space..")
 			fmt.Scan(&id, &name)
-			newEntry := newCart(id, name)
+			newEntry := newProduct(id, name)
 			myCart.add(newEntry)
 		case 2:
 			var id string
